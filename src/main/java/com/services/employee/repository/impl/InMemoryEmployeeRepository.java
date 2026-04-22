@@ -90,7 +90,7 @@ public class InMemoryEmployeeRepository implements EmployeeRepository {
                 return updated;
             }
         }
-        return updated;
+        return null;
     }
 
     @Override
