@@ -21,6 +21,8 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI employeeServiceOpenAPI() {
+        String securitySchemeName = "Bearer Authentication";
+        
         return new OpenAPI()
                 .info(new Info()
                         .title("Employee Service API")
@@ -32,6 +34,7 @@ public class OpenApiConfig {
                                 - In-memory storage (pre-seeded with 3 employees)
                                 - RFC 7807 Problem Detail error responses
                                 - Bean Validation on all request DTOs
+                                - JWT Authentication
                                 """)
                         .version("v1.0.0")
                         .contact(new Contact()
@@ -44,6 +47,15 @@ public class OpenApiConfig {
                         new Server()
                                 .url("http://localhost:3000")
                                 .description("Local Development Server")
-                ));
+                ))
+                .addSecurityItem(new io.swagger.v3.oas.models.security.SecurityRequirement()
+                        .addList(securitySchemeName))
+                .components(new io.swagger.v3.oas.models.Components()
+                        .addSecuritySchemes(securitySchemeName,
+                                new io.swagger.v3.oas.models.security.SecurityScheme()
+                                        .name(securitySchemeName)
+                                        .type(io.swagger.v3.oas.models.security.SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")));
     }
 }
